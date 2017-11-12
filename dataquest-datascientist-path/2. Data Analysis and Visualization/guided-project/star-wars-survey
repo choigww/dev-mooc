@@ -1,0 +1,1566 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Guided Project: Star Wars Survey\n",
+    "\n",
+    "While waiting for [Star Wars: The Force Awakens](https://en.wikipedia.org/wiki/Star_Wars:_The_Force_Awakens) to come out, the team at [FiveThirtyEight](http://fivethirtyeight.com/) became interested in answering some questions about Star Wars fans. In particular, they wondered: does the rest of America realize that “The Empire Strikes Back” is clearly the best of the bunch?\n",
+    "\n",
+    "* The team needed to collect data addressing this question. To do this, they surveyed Star Wars fans using the online tool SurveyMonkey. They received 835 total responses, which you download from [their GitHub repository](https://github.com/fivethirtyeight/data/tree/master/star-wars-survey).\n",
+    "<br>\n",
+    "* For this project, you'll be cleaning and exploring the data set in Jupyter notebook. To see a sample notebook containing all of the answers, visit [the project's GitHub repository](https://github.com/dataquestio/solutions/blob/master/Mission201Solution.ipynb).\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "You can read more about **character encodings** on developer [Joel Spolsky's blog](http://www.joelonsoftware.com/articles/Unicode.html)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 48,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "import numpy as np"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Major features\n",
+    "Feature|Meaning\n",
+    ":---:|:---:\n",
+    "RespondentID|An anonymized ID for the respondent (person taking the survey)\n",
+    "Gender|The respondent's gender\n",
+    "Age|The respondent's age\n",
+    "Household Income|The respondent's income\n",
+    "Education|The respondent's education level\n",
+    "Location (Census Region)|The respondent's location\n",
+    "Have you seen any of the 6 films in the Star Wars franchise?|Has a Yes or No response\n",
+    "Do you consider yourself to be a fan of the Star Wars film franchise?|Has a Yes or No response"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "star_wars = pd.read_csv(\"star_wars.csv\", encoding=\"ISO-8859-1\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>RespondentID</th>\n",
+       "      <th>Have you seen any of the 6 films in the Star Wars franchise?</th>\n",
+       "      <th>Do you consider yourself to be a fan of the Star Wars film franchise?</th>\n",
+       "      <th>Which of the following Star Wars films have you seen? Please select all that apply.</th>\n",
+       "      <th>Unnamed: 4</th>\n",
+       "      <th>Unnamed: 5</th>\n",
+       "      <th>Unnamed: 6</th>\n",
+       "      <th>Unnamed: 7</th>\n",
+       "      <th>Unnamed: 8</th>\n",
+       "      <th>Please rank the Star Wars films in order of preference with 1 being your favorite film in the franchise and 6 being your least favorite film.</th>\n",
+       "      <th>...</th>\n",
+       "      <th>Unnamed: 28</th>\n",
+       "      <th>Which character shot first?</th>\n",
+       "      <th>Are you familiar with the Expanded Universe?</th>\n",
+       "      <th>Do you consider yourself to be a fan of the Expanded Universe?ÂÃ¦</th>\n",
+       "      <th>Do you consider yourself to be a fan of the Star Trek franchise?</th>\n",
+       "      <th>Gender</th>\n",
+       "      <th>Age</th>\n",
+       "      <th>Household Income</th>\n",
+       "      <th>Education</th>\n",
+       "      <th>Location (Census Region)</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>NaN</td>\n",
+       "      <td>Response</td>\n",
+       "      <td>Response</td>\n",
+       "      <td>Star Wars: Episode I  The Phantom Menace</td>\n",
+       "      <td>Star Wars: Episode II  Attack of the Clones</td>\n",
+       "      <td>Star Wars: Episode III  Revenge of the Sith</td>\n",
+       "      <td>Star Wars: Episode IV  A New Hope</td>\n",
+       "      <td>Star Wars: Episode V The Empire Strikes Back</td>\n",
+       "      <td>Star Wars: Episode VI Return of the Jedi</td>\n",
+       "      <td>Star Wars: Episode I  The Phantom Menace</td>\n",
+       "      <td>...</td>\n",
+       "      <td>Yoda</td>\n",
+       "      <td>Response</td>\n",
+       "      <td>Response</td>\n",
+       "      <td>Response</td>\n",
+       "      <td>Response</td>\n",
+       "      <td>Response</td>\n",
+       "      <td>Response</td>\n",
+       "      <td>Response</td>\n",
+       "      <td>Response</td>\n",
+       "      <td>Response</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>3.292880e+09</td>\n",
+       "      <td>Yes</td>\n",
+       "      <td>Yes</td>\n",
+       "      <td>Star Wars: Episode I  The Phantom Menace</td>\n",
+       "      <td>Star Wars: Episode II  Attack of the Clones</td>\n",
+       "      <td>Star Wars: Episode III  Revenge of the Sith</td>\n",
+       "      <td>Star Wars: Episode IV  A New Hope</td>\n",
+       "      <td>Star Wars: Episode V The Empire Strikes Back</td>\n",
+       "      <td>Star Wars: Episode VI Return of the Jedi</td>\n",
+       "      <td>3</td>\n",
+       "      <td>...</td>\n",
+       "      <td>Very favorably</td>\n",
+       "      <td>I don't understand this question</td>\n",
+       "      <td>Yes</td>\n",
+       "      <td>No</td>\n",
+       "      <td>No</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>18-29</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>High school degree</td>\n",
+       "      <td>South Atlantic</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>3.292880e+09</td>\n",
+       "      <td>No</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>...</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>Yes</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>18-29</td>\n",
+       "      <td>$0 - $24,999</td>\n",
+       "      <td>Bachelor degree</td>\n",
+       "      <td>West South Central</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>3.292765e+09</td>\n",
+       "      <td>Yes</td>\n",
+       "      <td>No</td>\n",
+       "      <td>Star Wars: Episode I  The Phantom Menace</td>\n",
+       "      <td>Star Wars: Episode II  Attack of the Clones</td>\n",
+       "      <td>Star Wars: Episode III  Revenge of the Sith</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>1</td>\n",
+       "      <td>...</td>\n",
+       "      <td>Unfamiliar (N/A)</td>\n",
+       "      <td>I don't understand this question</td>\n",
+       "      <td>No</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>No</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>18-29</td>\n",
+       "      <td>$0 - $24,999</td>\n",
+       "      <td>High school degree</td>\n",
+       "      <td>West North Central</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>3.292763e+09</td>\n",
+       "      <td>Yes</td>\n",
+       "      <td>Yes</td>\n",
+       "      <td>Star Wars: Episode I  The Phantom Menace</td>\n",
+       "      <td>Star Wars: Episode II  Attack of the Clones</td>\n",
+       "      <td>Star Wars: Episode III  Revenge of the Sith</td>\n",
+       "      <td>Star Wars: Episode IV  A New Hope</td>\n",
+       "      <td>Star Wars: Episode V The Empire Strikes Back</td>\n",
+       "      <td>Star Wars: Episode VI Return of the Jedi</td>\n",
+       "      <td>5</td>\n",
+       "      <td>...</td>\n",
+       "      <td>Very favorably</td>\n",
+       "      <td>I don't understand this question</td>\n",
+       "      <td>No</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>Yes</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>18-29</td>\n",
+       "      <td>$100,000 - $149,999</td>\n",
+       "      <td>Some college or Associate degree</td>\n",
+       "      <td>West North Central</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>5 rows × 38 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   RespondentID Have you seen any of the 6 films in the Star Wars franchise?  \\\n",
+       "0           NaN                                           Response             \n",
+       "1  3.292880e+09                                                Yes             \n",
+       "2  3.292880e+09                                                 No             \n",
+       "3  3.292765e+09                                                Yes             \n",
+       "4  3.292763e+09                                                Yes             \n",
+       "\n",
+       "  Do you consider yourself to be a fan of the Star Wars film franchise?  \\\n",
+       "0                                           Response                      \n",
+       "1                                                Yes                      \n",
+       "2                                                NaN                      \n",
+       "3                                                 No                      \n",
+       "4                                                Yes                      \n",
+       "\n",
+       "  Which of the following Star Wars films have you seen? Please select all that apply.  \\\n",
+       "0           Star Wars: Episode I  The Phantom Menace                                    \n",
+       "1           Star Wars: Episode I  The Phantom Menace                                    \n",
+       "2                                                NaN                                    \n",
+       "3           Star Wars: Episode I  The Phantom Menace                                    \n",
+       "4           Star Wars: Episode I  The Phantom Menace                                    \n",
+       "\n",
+       "                                    Unnamed: 4  \\\n",
+       "0  Star Wars: Episode II  Attack of the Clones   \n",
+       "1  Star Wars: Episode II  Attack of the Clones   \n",
+       "2                                          NaN   \n",
+       "3  Star Wars: Episode II  Attack of the Clones   \n",
+       "4  Star Wars: Episode II  Attack of the Clones   \n",
+       "\n",
+       "                                    Unnamed: 5  \\\n",
+       "0  Star Wars: Episode III  Revenge of the Sith   \n",
+       "1  Star Wars: Episode III  Revenge of the Sith   \n",
+       "2                                          NaN   \n",
+       "3  Star Wars: Episode III  Revenge of the Sith   \n",
+       "4  Star Wars: Episode III  Revenge of the Sith   \n",
+       "\n",
+       "                          Unnamed: 6  \\\n",
+       "0  Star Wars: Episode IV  A New Hope   \n",
+       "1  Star Wars: Episode IV  A New Hope   \n",
+       "2                                NaN   \n",
+       "3                                NaN   \n",
+       "4  Star Wars: Episode IV  A New Hope   \n",
+       "\n",
+       "                                     Unnamed: 7  \\\n",
+       "0  Star Wars: Episode V The Empire Strikes Back   \n",
+       "1  Star Wars: Episode V The Empire Strikes Back   \n",
+       "2                                           NaN   \n",
+       "3                                           NaN   \n",
+       "4  Star Wars: Episode V The Empire Strikes Back   \n",
+       "\n",
+       "                                 Unnamed: 8  \\\n",
+       "0  Star Wars: Episode VI Return of the Jedi   \n",
+       "1  Star Wars: Episode VI Return of the Jedi   \n",
+       "2                                       NaN   \n",
+       "3                                       NaN   \n",
+       "4  Star Wars: Episode VI Return of the Jedi   \n",
+       "\n",
+       "  Please rank the Star Wars films in order of preference with 1 being your favorite film in the franchise and 6 being your least favorite film.  \\\n",
+       "0           Star Wars: Episode I  The Phantom Menace                                                                                              \n",
+       "1                                                  3                                                                                              \n",
+       "2                                                NaN                                                                                              \n",
+       "3                                                  1                                                                                              \n",
+       "4                                                  5                                                                                              \n",
+       "\n",
+       "            ...                  Unnamed: 28  \\\n",
+       "0           ...                         Yoda   \n",
+       "1           ...               Very favorably   \n",
+       "2           ...                          NaN   \n",
+       "3           ...             Unfamiliar (N/A)   \n",
+       "4           ...               Very favorably   \n",
+       "\n",
+       "        Which character shot first?  \\\n",
+       "0                          Response   \n",
+       "1  I don't understand this question   \n",
+       "2                               NaN   \n",
+       "3  I don't understand this question   \n",
+       "4  I don't understand this question   \n",
+       "\n",
+       "  Are you familiar with the Expanded Universe?  \\\n",
+       "0                                     Response   \n",
+       "1                                          Yes   \n",
+       "2                                          NaN   \n",
+       "3                                           No   \n",
+       "4                                           No   \n",
+       "\n",
+       "  Do you consider yourself to be a fan of the Expanded Universe?ÂÃ¦  \\\n",
+       "0                                           Response                   \n",
+       "1                                                 No                   \n",
+       "2                                                NaN                   \n",
+       "3                                                NaN                   \n",
+       "4                                                NaN                   \n",
+       "\n",
+       "  Do you consider yourself to be a fan of the Star Trek franchise?    Gender  \\\n",
+       "0                                           Response                Response   \n",
+       "1                                                 No                    Male   \n",
+       "2                                                Yes                    Male   \n",
+       "3                                                 No                    Male   \n",
+       "4                                                Yes                    Male   \n",
+       "\n",
+       "        Age     Household Income                         Education  \\\n",
+       "0  Response             Response                          Response   \n",
+       "1     18-29                  NaN                High school degree   \n",
+       "2     18-29         $0 - $24,999                   Bachelor degree   \n",
+       "3     18-29         $0 - $24,999                High school degree   \n",
+       "4     18-29  $100,000 - $149,999  Some college or Associate degree   \n",
+       "\n",
+       "  Location (Census Region)  \n",
+       "0                 Response  \n",
+       "1           South Atlantic  \n",
+       "2       West South Central  \n",
+       "3       West North Central  \n",
+       "4       West North Central  \n",
+       "\n",
+       "[5 rows x 38 columns]"
+      ]
+     },
+     "execution_count": 35,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "star_wars.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 36,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1"
+      ]
+     },
+     "execution_count": 36,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# count nan in RespondentID\n",
+    "star_wars.RespondentID.isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 37,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# filter rows that not-null RespondentID\n",
+    "\n",
+    "star_wars = star_wars[star_wars.RespondentID.notnull()]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "* Convert the 'Have you seen any of the 6 films in the Star Wars franchise?' column to the Boolean type.\n",
+    "* Convert the Do you consider yourself to be a fan of the Star Wars film franchise? column to the Boolean type.\n",
+    "* When you're finished, both columns should only contain the values True, False, and NaN."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 38,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "def print_uniques_and_num_nulls(colname):\n",
+    "    print('unique values :', star_wars[colname].unique())\n",
+    "    print('num of nulls :', star_wars[colname].isnull().sum())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "unique values : ['Yes' 'No']\n",
+      "num of nulls : 0\n"
+     ]
+    }
+   ],
+   "source": [
+    "print_uniques_and_num_nulls('Have you seen any of the 6 films in the Star Wars franchise?')\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "unique values : ['Yes' nan 'No']\n",
+      "num of nulls : 350\n"
+     ]
+    }
+   ],
+   "source": [
+    "print_uniques_and_num_nulls('Do you consider yourself to be a fan of the Star Wars film franchise?')\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "def binarize(value):\n",
+    "    if value == 'Yes': return 1;\n",
+    "    elif value == 'No': return 0;"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "star_wars['Have you seen any of the 6 films in the Star Wars franchise?']=\\\n",
+    "            star_wars['Have you seen any of the 6 films in the Star Wars franchise?'].\\\n",
+    "            apply(binarize)\n",
+    "star_wars['Do you consider yourself to be a fan of the Star Wars film franchise?']=\\\n",
+    "            star_wars['Do you consider yourself to be a fan of the Star Wars film franchise?'].\\\n",
+    "            apply(binarize)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "* 'Which of the following Star Wars films have you seen? Please select all that apply.' - Whether or not the respondent saw Star Wars: Episode I The Phantom Menace.\n",
+    "* Unnamed: 4 - Whether or not the respondent saw Star Wars: Episode II Attack of the Clones.\n",
+    "* Unnamed: 5 - Whether or not the respondent saw Star Wars: Episode III Revenge of the Sith.\n",
+    "* Unnamed: 6 - Whether or not the respondent saw Star Wars: Episode IV A New Hope.\n",
+    "* Unnamed: 7 - Whether or not the respondent saw Star Wars: Episode V The Empire Strikes Back.\n",
+    "* Unnamed: 8 - Whether or not the respondent saw Star Wars: Episode VI Return of the Jedi."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### binarize - 'Which of the following Star Wars films have you seen? Please select all that apply.'"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 43,
+   "metadata": {
+    "collapsed": false,
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "unique values : ['Star Wars: Episode I  The Phantom Menace' nan]\n",
+      "num of nulls : 513\n"
+     ]
+    }
+   ],
+   "source": [
+    "print_uniques_and_num_nulls('Which of the following Star Wars films have you seen? Please select all that apply.')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 49,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "star_wars['Which of the following Star Wars films have you seen? Please select all that apply.'] =\\\n",
+    "            star_wars['Which of the following Star Wars films have you seen? Please select all that apply.']\\\n",
+    "            .map({\n",
+    "                'Star Wars: Episode I  The Phantom Menace': True,\n",
+    "                np.nan: False\n",
+    "            })"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 50,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "star_wars = star_wars.rename(columns={\n",
+    "    'Which of the following Star Wars films have you seen? Please select all that apply.':'seen_1'\n",
+    "})"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### binarize - 'Unnamed: 4'"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "unique values : ['Star Wars: Episode II  Attack of the Clones' nan]\n",
+      "num of nulls : 615\n"
+     ]
+    }
+   ],
+   "source": [
+    "print_uniques_and_num_nulls('Unnamed: 4')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 51,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "star_wars['Unnamed: 4'] =\\\n",
+    "            star_wars['Unnamed: 4']\\\n",
+    "            .map({\n",
+    "                'Star Wars: Episode II  Attack of the Clones': True,\n",
+    "                np.nan: False\n",
+    "            })"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 52,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "star_wars.rename(columns={'Unnamed: 4':'seen_2'}, inplace=True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### binarize - 'Unnamed: 5'"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {
+    "collapsed": false,
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "unique values : ['Star Wars: Episode III  Revenge of the Sith' nan]\n",
+      "num of nulls : 636\n"
+     ]
+    }
+   ],
+   "source": [
+    "print_uniques_and_num_nulls('Unnamed: 5')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 53,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "star_wars['Unnamed: 5'] =\\\n",
+    "            star_wars['Unnamed: 5']\\\n",
+    "            .map({\n",
+    "                'Star Wars: Episode III  Revenge of the Sith': True,\n",
+    "                np.nan: False\n",
+    "            })"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 54,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "star_wars.rename(columns={'Unnamed: 5':'seen_3'}, inplace=True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### binarize - 'Unnamed: 6'"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {
+    "collapsed": false,
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "unique values : ['Star Wars: Episode IV  A New Hope' nan]\n",
+      "num of nulls : 579\n"
+     ]
+    }
+   ],
+   "source": [
+    "print_uniques_and_num_nulls('Unnamed: 6')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 55,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "star_wars['Unnamed: 6'] =\\\n",
+    "            star_wars['Unnamed: 6']\\\n",
+    "            .map({\n",
+    "                'Star Wars: Episode IV  A New Hope': True,\n",
+    "                np.nan: False\n",
+    "            })\n",
+    "            "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 56,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "star_wars.rename(columns={'Unnamed: 6':'seen_4'}, inplace=True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### binarize - 'Unnamed: 7'"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "unique values : ['Star Wars: Episode V The Empire Strikes Back' nan]\n",
+      "num of nulls : 428\n"
+     ]
+    }
+   ],
+   "source": [
+    "print_uniques_and_num_nulls('Unnamed: 7')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 57,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "star_wars['Unnamed: 7'] =\\\n",
+    "            star_wars['Unnamed: 7']\\\n",
+    "            .map({\n",
+    "                'Star Wars: Episode V The Empire Strikes Back': True,\n",
+    "                np.nan: False\n",
+    "            })"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 58,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "star_wars.rename(columns={'Unnamed: 7':'seen_5'}, inplace=True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### binarize - 'Unnamed: 8'"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 66,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "unique values : ['Star Wars: Episode VI Return of the Jedi' nan]\n",
+      "num of nulls : 448\n"
+     ]
+    }
+   ],
+   "source": [
+    "print_uniques_and_num_nulls('Unnamed: 8')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 67,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "star_wars['Unnamed: 8'] =\\\n",
+    "            star_wars['Unnamed: 8']\\\n",
+    "            .map({\n",
+    "                'Star Wars: Episode VI Return of the Jedi': True,\n",
+    "                np.nan: False\n",
+    "            })"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 68,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "star_wars.rename(columns={'Unnamed: 8':'seen_6'}, inplace=True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The next six columns ask the respondent to rank the Star Wars movies in order of least favorite to most favorite. 1 means the film was the most favorite, and 6 means it was the least favorite. Each of the following columns can contain the value 1, 2, 3, 4, 5, 6, or NaN:\n",
+    "\n",
+    "* Please rank the Star Wars films in order of preference with 1 being your favorite film in the franchise and 6 being your least favorite film. - How much the respondent liked Star Wars: Episode I The Phantom Menace\n",
+    "* Unnamed: 10 - How much the respondent liked Star Wars: Episode II Attack of the Clones\n",
+    "* Unnamed: 11 - How much the respondent liked Star Wars: Episode III Revenge of the Sith\n",
+    "* Unnamed: 12 - How much the respondent liked Star Wars: Episode IV A New Hope\n",
+    "* Unnamed: 13 - How much the respondent liked Star Wars: Episode V The Empire Strikes Back\n",
+    "* Unnamed: 14 - How much the respondent liked Star Wars: Episode VI Return of the Jedi\n",
+    "\n",
+    "Fortunately, these columns don't require a lot of cleanup. We'll need to convert each column to a numeric type, though, then rename the columns so that we can tell what they represent more easily.\n",
+    "\n",
+    "```python\n",
+    "star_wars[star_wars.columns[9:15]] = star_wars[star_wars.columns[9:15]].astype(float)\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 59,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "transform_to_float = ['Please rank the Star Wars films in order of preference with 1 being your favorite film in the franchise and 6 being your least favorite film.',\\\n",
+    "                      'Unnamed: 10', 'Unnamed: 11', 'Unnamed: 12', 'Unnamed: 13', 'Unnamed: 14']\n",
+    "\n",
+    "star_wars[transform_to_float] = star_wars[transform_to_float].astype(float)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 60,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "star_wars = star_wars.rename(columns =\n",
+    "                             {'Please rank the Star Wars films in order of preference with 1 being your favorite film in the franchise and 6 being your least favorite film.':'rank_1',\n",
+    "                             'Unnamed: 10':'rank_2',\n",
+    "                             'Unnamed: 11':'rank_3',\n",
+    "                             'Unnamed: 12':'rank_4',\n",
+    "                             'Unnamed: 13':'rank_5',\n",
+    "                             'Unnamed: 14':'rank_6'})"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 61,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>rank_1</th>\n",
+       "      <th>rank_2</th>\n",
+       "      <th>rank_3</th>\n",
+       "      <th>rank_4</th>\n",
+       "      <th>rank_5</th>\n",
+       "      <th>rank_6</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>3.0</td>\n",
+       "      <td>2.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>4.0</td>\n",
+       "      <td>5.0</td>\n",
+       "      <td>6.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>1.0</td>\n",
+       "      <td>2.0</td>\n",
+       "      <td>3.0</td>\n",
+       "      <td>4.0</td>\n",
+       "      <td>5.0</td>\n",
+       "      <td>6.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>5.0</td>\n",
+       "      <td>6.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>2.0</td>\n",
+       "      <td>4.0</td>\n",
+       "      <td>3.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>5</th>\n",
+       "      <td>5.0</td>\n",
+       "      <td>4.0</td>\n",
+       "      <td>6.0</td>\n",
+       "      <td>2.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>3.0</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   rank_1  rank_2  rank_3  rank_4  rank_5  rank_6\n",
+       "1     3.0     2.0     1.0     4.0     5.0     6.0\n",
+       "2     NaN     NaN     NaN     NaN     NaN     NaN\n",
+       "3     1.0     2.0     3.0     4.0     5.0     6.0\n",
+       "4     5.0     6.0     1.0     2.0     4.0     3.0\n",
+       "5     5.0     4.0     6.0     2.0     1.0     3.0"
+      ]
+     },
+     "execution_count": 61,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "star_wars[['rank_1', 'rank_2', 'rank_3', 'rank_4', 'rank_5','rank_6']].head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Use the pandas.DataFrame.mean() method to compute the mean of each of the ranking columns from the last screen.<br><br>\n",
+    "Make a bar chart of each ranking. You can use a matplotlib bar chart for this.\n",
+    "* Make sure to run %matplotlib inline beforehand to show your plots in the notebook.\n",
+    "\n",
+    "Write up a summary of what you've done so far in a Markdown cell. Also discuss why you think the respondents ranked the movies the way they did.\n",
+    "Remember that a lower ranking is better!"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 62,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "%matplotlib inline"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Summary - series ranking by point\n",
+    "The first 3 episodes of Star Wars = Top 3 Ranking\n",
+    "\n",
+    "* Ranking 1 : Star Wars: Episode III Revenge of the Sith\n",
+    "* Ranking 2 : Star Wars: Episode II Attack of the Clones\n",
+    "* Ranking 3 : Star Wars: Episode I The Phantom Menace\n",
+    "* Ranking 4 : Star Wars: Episode IV A New Hope\n",
+    "* Ranking 5 : Star Wars: Episode VI Return of the Jedi\n",
+    "* Ranking 6 : Star Wars: Episode V The Empire Strikes Back"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 63,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<matplotlib.axes._subplots.AxesSubplot at 0x7effcbc25ba8>"
+      ]
+     },
+     "execution_count": 63,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAXEAAAEYCAYAAACqfMY2AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz\nAAALEgAACxIB0t1+/AAAGSJJREFUeJzt3W9Mlff9//HXhTIrkAWNEbYjRZ00+Ad6OMSyzQaPtqET\nLbLWaGMCndEyYp2tc8lsd6OYkm5dOxIbG8ed2ZisrYlbColg16w93GAiqZOUjSyoCyJnSqduoJuT\n6rl+N/z2/KTn4DnCdTh8Lp+P5CTnXNfnnM/7vZFXL69zrutj2bZtCwBgpJRkFwAAGD9CHAAMRogD\ngMEIcQAwGCEOAAYjxAHAYHGHeCgUks/nU0VFRcS+trY2ZWZmyufzyefzqb6+3tEiAQDRTY934L59\n+7RkyRINDw9H3V9aWqrm5mbHCgMAxBbXkfjAwIBaWlq0bdu2McdwzRAATL64QnzXrl164403ZFnW\nmGOOHz8ur9ertWvXqqenx7ECAQBjixniR48eVVZWlrxer2zbjnrEXVxcrP7+fnV1dWnHjh2qrKxM\nSLEAgK+wY3jppZfsnJwce8GCBXZ2dradnp5uV1VV3fU98+fPty9fvhyxXRIPHjx48BjHYywxQ/xO\ngUDAfvLJJyO2X7x4Mfz8xIkTdm5ubvTJ7lJIIrzyyiuTOt9koz9zubk326Y/p90tO+P+dcpXNTY2\nyrIs1dTU6MiRIzpw4IBSU1M1c+ZMHT58eLwfCwC4B/cU4itXrtTKlSslST/84Q/D259//nk9//zz\nzlYGAIjJ1Vds+v3+ZJeQUPRnLjf3JtHfZLL+73zL5ExmWfyeHADu0d2y09VH4gDgdoQ4ABiMEEfC\nZWfPl2VZk/bIzp6f7JaBScM5cSTc7ds1TOb/7/ydwV04Jw4ALkWIA4DBCHEAMBghDgAGI8QBwGCE\nOAAYjBAHAIMR4gBgMEIcAAxGiAOAweIO8VAoJJ/Pp4qKiqj7d+7cqby8PHm9XnV1dTlW4P2Ae4sA\nGK+4Q3zfvn1asmRJ1H2tra06e/asTp8+rcbGRtXW1jpW4P1gcPCcJnPN1dvzAXCDuEJ8YGBALS0t\n2rZtW9T9TU1Nqq6uliSVlJRoaGhIg4ODzlUJAIgqrhDftWuX3njjjf+7G12kYDConJyc8GuPx6Ng\nMOhMhQCAMcUM8aNHjyorK0ter1e2bXOLTwCYQmKudt/e3q7m5ma1tLTo+vXrunr1qqqrq3Xo0KHw\nGI/Ho/Pnz4dfDwwMyOPxRP28urq68HO/3z+lFhwFgKkgEAgoEAjENfaeFoVoa2vTr371KzU3N4/a\n3tLSorfffltHjx5VR0eHXnzxRXV0dEROxqIQUbl90QS39wck2t2yM+aR+FgaGxtlWZZqampUXl6u\nlpYWLVq0SOnp6Tp48OC4iwUAxI/l2aYAtx+pur0/INFYng0AXIoQBwCDEeIAYDBCHAAMRogDgMEI\ncQAwGCEOAAYjxAHAYIQ4ABjMiBBn5RsAiM6Iy+7dftk2/Tk+I5fdw1W47B4AXIoQBwCDEeIAYDBC\nHAAMRogDgMFihviNGzdUUlKioqIiLV26VC+//HLEmLa2NmVmZsrn88nn86m+vj4hxQIARou5PNuM\nGTP0ySefKC0tTbdu3dKKFSvU3t6uFStWjBpXWloasfYmACCx4jqdkpaWJun2UXkoFNKsWbMixvC7\nXACYfHGFeCgUUlFRkbKzs+X3+7VkyZKIMcePH5fX69XatWvV09PjeKEAgEhxrXafkpKiU6dOaXh4\nWGVlZWpra9PKlSvD+4uLi9Xf36+0tDS1traqsrJSvb29UT+rrq4u/Nzv98vv90+oAQBwm0AgoEAg\nENfYe77s/tVXX1VaWpp279495pgFCxbo5MmTmj179ujJuOw++mz05/SMnN6Dq0zosvtLly5paGhI\nknT9+nV99NFH8nq9o8YMDg6Gn3d2dsq27YgABwA4L+bplAsXLujZZ5+VbdsKhUKqqqrSY489psbG\nRlmWpZqaGh05ckQHDhxQamqqZs6cqcOHD09G7QBw3+MuhtFn5HSDk7O5vD8g0biLIQC4FCEOAAYj\nxAHAYIQ4ABiMEAcAgxHiAGAwQhwADEaIAxOUnT1flmVNyiM7e36y28UUw8U+0WfkYhgnZ6M/J2fj\nQqb7EBf7AIBLEeIAYDBCHAAMRogDgMEIcQAwGCEOAAYjxAHAYDFD/MaNGyopKVFRUZGWLl2ql19+\nOeq4nTt3Ki8vT16vV11dXY4XCgCIFHN5thkzZuiTTz5RWlqabt26pRUrVqi9vV0rVqwIj2ltbdXZ\ns2d1+vRpnThxQrW1tero6Eho4QCAOE+npKWlSbp9VB4KhTRr1qxR+5uamlRdXS1JKikp0dDQ0KjF\nkwFgKprMWyYk6rYJcYV4KBRSUVGRsrOz5ff7tWTJklH7g8GgcnJywq89Ho+CwaCzlQKAwwYHz+n2\nLRMm53F7PmfFPJ0iSSkpKTp16pSGh4dVVlamtrY2rVy5clwT1tXVhZ/7/X75/f5xfQ4AuFUgEFAg\nEIhr7D3fAOvVV19VWlqadu/eHd5WW1urVatWadOmTZKk/Px8tbW1KSsra/Rk3AAr+mz05/SMLu6P\nG2A5yZS/zQndAOvSpUsaGhqSJF2/fl0fffSRvF7vqDEVFRU6dOiQJKmjo0OZmZkRAQ4AcF7M0ykX\nLlzQs88+K9u2FQqFVFVVpccee0yNjY2yLEs1NTUqLy9XS0uLFi1apPT0dB08eHAyageA+x73E48+\no4v/OS7Rn8OzcTrFWKb8bXI/cQBwKUIcAAxGiAOAwQhxADAYIQ4ABiPEAcBghDgAGIwQBwCDEeIA\nYDBCHAAMRogDgMEIcQAwGCEOAAYjxAHAYIQ4ABgsZogPDAxo9erVWrp0qQoKCvTWW29FjGlra1Nm\nZqZ8Pp98Pp/q6+sTUiwAYLSYK/tMnz5dDQ0N8nq9unbtmoqLi1VWVqb8/PxR40pLS9Xc3JywQgEA\nkWIeiWdnZ4fX1MzIyNDixYsVDAYjxrHaCABMvns6J97X16euri6VlJRE7Dt+/Li8Xq/Wrl2rnp4e\nxwoEAIwt5umUL127dk0bNmzQvn37lJGRMWpfcXGx+vv7lZaWptbWVlVWVqq3t9fxYgFMruzs+Roc\nPDdp82Vl5erixb5Jm88N4loo+ebNm1q3bp3WrFmjF154IeaHLliwQCdPntTs2bNHT2ZZeuWVV8Kv\n/X6//H5/7CINWcx03LPRn9Mzurg/N/cm0d9tgUBAgUAg/Hrv3r1jvi+uEK+urtacOXPU0NAQdf/g\n4KCysrIkSZ2dndq4caP6+voiJ2O1++iz0Z/TM7q4Pzf3JtHfGO+6S3bGPJ3S3t6u3/72tyooKFBR\nUZEsy9Jrr72mc+fOybIs1dTU6MiRIzpw4IBSU1M1c+ZMHT58+J6LBADcu7iOxB2bjCPx6LPRn9Mz\nurg/N/cm0d8Y77pLdnLFJgAYjBAHAIMR4gBgMEIcAAxGiAOAwQhxADAYIQ4ABiPEAcBghDgAGIwQ\nBwCDEeIAYDBCHAAMRogDgMEIcQAwGCEOAAYjxAHAYDFDfGBgQKtXr9bSpUtVUFCgt956K+q4nTt3\nKi8vT16vV11dXY4XCgCIFHN5tunTp6uhoUFer1fXrl1TcXGxysrKlJ+fHx7T2tqqs2fP6vTp0zpx\n4oRqa2vV0dGR0MIBAHEciWdnZ8vr9UqSMjIytHjxYgWDwVFjmpqaVF1dLUkqKSnR0NCQBgcHE1Au\nAOBO93ROvK+vT11dXSopKRm1PRgMKicnJ/za4/FEBD0AwHlxh/i1a9e0YcMG7du3TxkZGYmsCQAQ\np5jnxCXp5s2b2rBhg6qqqrR+/fqI/R6PR+fPnw+/HhgYkMfjifpZdXV14ed+v19+v//eKgYAlwsE\nAgoEAnGNtWzbtmMNqq6u1pw5c9TQ0BB1f0tLi95++20dPXpUHR0devHFF6N+sWlZluKYLur7pHt/\n3/iNr85xz0Z/Ts/o4v7c3JtEf2O86y7ZGTPE29vbVVpaqoKCAlmWJcuy9Nprr+ncuXOyLEs1NTWS\npB07dujYsWNKT0/XwYMH5fP57qmQWA2Y8D/0uGejP6dndHF/bu5Nor8x3jWREHcSIT7GbPTn9Iwu\n7s/NvUn0N8a77pKdXLEJAAYjxAHAYIQ4ABiMEAcAgxHiAGAwQhwADEaIA4DBCHEAMBghDgAGI8QB\nwGCEOAAYjBAHAIMR4gBgMEIcAAxGiAOAwQhxADBYzBDfunWrsrKyVFhYGHV/W1ubMjMz5fP55PP5\nVF9f73iRAIDoYi6UvGXLFv3oRz9SdXX1mGNKS0vV3NzsaGEAgNhiHok/+uijmjVr1l3HTOZySgCA\n/8+Rc+LHjx+X1+vV2rVr1dPT48RHAgDiEPN0SizFxcXq7+9XWlqaWltbVVlZqd7eXidqAwDEMOEQ\nz8jICD9fs2aNtm/fritXrmj27NlRx9fV1YWf+/1++f3+iZYAAK4SCAQUCATiGmvZcZzQ7uvr05NP\nPqnu7u6IfYODg8rKypIkdXZ2auPGjerr64s+mWWN6/y5ZVmSJvO8+/jqHPds9Of0jC7uz829SfQ3\nxrvukp0xj8Q3b96sQCCgy5cv68EHH9TevXs1MjIiy7JUU1OjI0eO6MCBA0pNTdXMmTN1+PDhey4Q\nADA+cR2JOzYZR+LRZ6M/p2d0cX9u7k2ivzHedZfs5IpNADAYIQ4ABiPEAcBghDgAGIwQBwCDEeIA\nYDBCHAAMRogDgMEIcQAwGCEOAAYjxAHAYIQ4ABiMEAcAgxHiAGAwQhwADEaIA4DBYob41q1blZWV\npcLCwjHH7Ny5U3l5efJ6verq6nK0QADA2GKG+JYtW/Thhx+Oub+1tVVnz57V6dOn1djYqNraWkcL\nBACMLWaIP/roo5o1a9aY+5uamlRdXS1JKikp0dDQkAYHB52rEAAwpgmfEw8Gg8rJyQm/9ng8CgaD\nE/1YAEAcYq5277S6urrwc7/fL7/fP9klAMCUFggEFAgE4ho74RD3eDw6f/58+PXAwIA8Hs+Y4+8M\ncQBApK8e4O7du3fMsXGdTrFtW7ZtR91XUVGhQ4cOSZI6OjqUmZmprKyseygXADBeMY/EN2/erEAg\noMuXL+vBBx/U3r17NTIyIsuyVFNTo/LycrW0tGjRokVKT0/XwYMHJ6NuAIAkyx7rEDsRk1nWmEf0\nsd4nTVqZksZX57hnoz+nZ3Rxf27uTaK/Md51l+zkik0AMBghDgAGI8QBwGCEOAAYjBAHAIMR4gBg\nMEIcAAxGiAOAwQhxADAYIQ4ABiPEAcBghDgAGIwQBwCDEeIAYDBCHAAMRogDgMHiCvFjx44pPz9f\nDz30kF5//fWI/W1tbcrMzJTP55PP51N9fb3jhQIAIsVcni0UCmnHjh364x//qG9+85tavny51q9f\nr/z8/FHjSktL1dzcnLBCAQCRYh6Jd3Z2Ki8vT7m5uUpNTdUzzzyjpqamiHGTuaQSAOC2mCEeDAaV\nk5MTfj1v3jwFg8GIccePH5fX69XatWvV09PjbJUAgKhink6JR3Fxsfr7+5WWlqbW1lZVVlaqt7c3\n6ti6urrwc7/fL7/f70QJAOAagUBAgUAgrrExV7vv6OhQXV2djh07Jkn6xS9+Icuy9NOf/nTM9yxY\nsEAnT57U7NmzR0/GavfRZ6M/p2d0cX9u7k2ivzHeNZHV7pcvX64zZ87o3LlzGhkZ0fvvv6+KiopR\nYwYHB8PPOzs7Zdt2RIADAJwX83TKtGnTtH//fpWVlSkUCmnr1q1avHixGhsbZVmWampqdOTIER04\ncECpqamaOXOmDh8+PBm1A8B9L+bpFEcn43RK9Nnoz+kZXdyfm3uT6G+Md03kdAoAYOoixAHAYIQ4\nABiMEAcAgxHiAGAwQhwADEaIA4DBCHEAMBghDgAGI8QBwGCEOAAYjBAHAIMR4gBgMEIcAAxGiAOA\nweIK8WPHjik/P18PPfSQXn/99ahjdu7cqby8PHm9XnV1dTlaJAAgupghHgqFtGPHDn344Yf661//\nqvfee09/+9vfRo1pbW3V2bNndfr0aTU2Nqq2tjZhBd+bQLILSLBAsgtIsECyC0igQLILSLBAsgtI\nsECyCwiLGeKdnZ3Ky8tTbm6uUlNT9cwzz6ipqWnUmKamJlVXV0uSSkpKNDQ0NGrdzeQJJLuABAsk\nu4AECyS7gAQKJLuABAsku4AECyS7gLCYIR4MBpWTkxN+PW/ePAWDwbuO8Xg8EWMAAM7ji00AMFjM\n1e49Ho/6+/vDrwcGBuTxeCLGnD9//q5jvnR7YdLxGO/79o5vtnHXOV70F52b+3NzbxL9jTGbw/3F\nDPHly5frzJkzOnfunL7xjW/o/fff13vvvTdqTEVFhd5++21t2rRJHR0dyszMVFZWVsRnTeYq1gBw\nP4gZ4tOmTdP+/ftVVlamUCikrVu3avHixWpsbJRlWaqpqVF5eblaWlq0aNEipaen6+DBg5NROwDc\n9yybw2MAMBZfbAKAwQhxADAYIQ4kyeeff57sEjBOly9fTnYJYfdFiK9ZsybZJUzY8PCwXnrpJVVV\nVendd98dtW/79u1Jqso5AwMD2rZtm/bs2aOhoSFt2bJFBQUFqqqqckXYXblyZdTj8uXLeuSRR/Sv\nf/1LV65cSXZ5E3bs2LHw86GhIW3dulWFhYXavHnzFLl6e/z27NmjS5cuSZI+/fRTLVy4UCUlJcrN\nzVVbW1uSq3PRF5t//vOfo263bVvr1q3ThQsXJrkiZz399NPKy8vTt7/9bf3mN79Ramqq3n33Xc2Y\nMUM+n2/M/k3x+OOPa/369frPf/6jd955R1u2bNHmzZv1wQcfKBAI6He/+12yS5yQlJQU5ebmjto2\nMDCgefPmybIs/f3vf09SZc64829w27Ztys7O1nPPPaff//73amtr0wcffJDkCsevoKBA3d3dkqRV\nq1bpl7/8pZYvX67e3l5t3rxZn376aXILtF0iJSXFXrVqle33+yMeDzzwQLLLm7CHH3541Ov6+nr7\nu9/9rn3p0iW7qKgoSVU5587+cnJyRu3zer2TXY7j3nzzTfuJJ56wP/vss/C2+fPnJ7EiZ935N/jV\nv9WvvjZNfn6+/cUXX9i2bdslJSWj9i1btiwZJY0S83fipvjyt+t5eXkR++68r4upbty4oVAopJSU\n22fAfvazn8nj8ai0tFTXrl1LcnUTZ9/xD8Ivb6b2pVu3bk12OY7bvXu3Nm3apF27diknJ0d79+5N\nwpWJifP555+roaFBtm1raGhItm2H+wuFQkmubmK2b9+u8vJy7dmzR9/73vf0wgsv6KmnntLHH38s\nr9eb7PI0ra6uri7ZRThh7ty5mjt3rubMmROxb+HChcrPz09CVc7p7+9XSkqKFi5cGN7m9Xr1rW99\nS3/4wx+0c+fOJFY3cRcuXNDy5cv1ta99TatXrw5vP3PmjE6dOqWNGzcmsTpnfP3rX9fGjRt148YN\n1dTU6J///Kd+8pOfJLssR1y9elUjIyMaGRmR1+vV0qVLlZ6erosXL6q7u1vf//73k13iuJWUlCgn\nJ0e//vWv9ac//Ulnz55Vd3e3HnnkEdXV1WnatGnJLTDJ/xKYdO+8806yS0go+jPDf//7X7u7uzti\nu1v6G4ub+0tWb675YjNebvgS8G7oz2z0Z65k9XZf/MTwTm7/bxb9mY3+zJWs3u67EHfTl0nR0J/Z\n6M9cyertvgtxNx8JSPRnOvozF0fiDrlx40bEtjuviFuxYsVkluM4+qO/qczN/U3Z3pLxbWoilZeX\n2yMjI+HX//jHP2yfz5fEipxFf2ajP3NN1d5cdyReWVmpjRs36tatW+rr69MTTzyhn//858kuyzH0\nZzb6M9eU7S3Z/xVJhP3799vr1q2zly1bZre3tye7HMfRn9noz1xTsTfX/E68oaEh/Ny2bR06dEiF\nhYUqKiqSJP34xz9OVmmOoD/6m8rc3N9U78019065evXqqNdPPfVU1O2moj+z0Z+5pnpvrjkSB4D7\nkWuOxL/U29urN998U319fbp582Z4+8cff5zEqpxDf2ajP3NN1d5cdyT+8MMPq7a2VsXFxaPuLlZc\nXJzEqpxDf2ajP3NN1d5cF+LFxcU6efJksstIGPozG/2Za6r25pr7iX/pwoUL6unp0bx58/TFF1/o\n+vXrun79umbOnJns0hxBf2ajP3NN1d5cdyS+YMGCiG1uWMPwS/RnNvoz11TtzXUhDgD3E9f9OkWS\n/vKXv6inp0f/+9//wtu+um6jyejPbPRnrinZ22RfIppodXV1tt/vt+fOnWv/4Ac/sLOysuynn346\n2WU5hv7MRn/mmqq9uS7Ely1bZt+6dcsuLCy0bdu2L168aD/++ONJrso59Gc2+jPXVO3NdXcxfOCB\nB5SSkqLp06dreHhYc+fO1fnz55NdlmPoz2z0Z66p2purzonbtq3CwkL9+9//1nPPPafi4mJlZGTo\nO9/5TrJLcwT9mY3+zDWVe3Pdr1MKCgrU3d0tSerr69Pw8LAKCwuTXJVz6M9s9Geuqdqb6y72OXHi\nhObNmyePx6PMzExlZWUluyRH0Z/Z6M9cU7U31x2J5+fn68yZM8rNzVV6erps25ZlWfrss8+SXZoj\n6M9s9Geuqdqb60L83LlzUbfn5uZOciWJQX9moz9zTdXeXBfiAHA/cd1PDAHgfkKIA4DBCHEAMBgh\nDgAGI8QBwGD/D710kQsDNsZHAAAAAElFTkSuQmCC\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x7effd0838f60>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "star_wars[['rank_1', 'rank_2', 'rank_3', 'rank_4', 'rank_5','rank_6']].mean().plot(kind='bar')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Use the df.sum() method to compute the sum of each of the seen columns.<br><br>\n",
+    "Make a bar chart of each ranking. You can use a matplotlib bar chart for this.<br><br>\n",
+    "Write up your thoughts on why the results look the way they do in a Markdown cell. Also discuss how the results correlate with the rankings."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 69,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "seen_1    673\n",
+       "seen_2    571\n",
+       "seen_3    550\n",
+       "seen_4    607\n",
+       "seen_5    758\n",
+       "seen_6    738\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 69,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "star_wars[['seen_1', 'seen_2', 'seen_3', 'seen_4', 'seen_5', 'seen_6']].sum()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Summary - series ranking by views\n",
+    "ranking by views seems to have - correlation with ranking by point.\n",
+    "\n",
+    "* Ranking 1 : Star Wars: Episode V The Empire Strikes Back\n",
+    "* Ranking 2 : Star Wars: Episode VI Return of the Jedi\n",
+    "* Ranking 3 : Star Wars: Episode I The Phantom Menace\n",
+    "* Ranking 4 : Star Wars: Episode IV A New Hope\n",
+    "* Ranking 5 : Star Wars: Episode II Attack of the Clones\n",
+    "* Ranking 6 : Star Wars: Episode III Attack of the Clones"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 70,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<matplotlib.axes._subplots.AxesSubplot at 0x7efffd9a3d30>"
+      ]
+     },
+     "execution_count": 70,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "image/png": "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\nXQB6e3v585//zJ49e9I8Verccccd6R4hJfr6+njkkUfmwEt/JMf+/fv56KOPALAsi/vvv58f//jH\n/P73v2dsbCzN083DJ0VXrlx5zDXymSgcDnPrrbeSm5vL4cOHaWpq4pJLLgFg7dq1vPLKK2me8PRs\n3bqVu+66i0WLFnHrrbdy991386UvfYkdO3Zwxx13sGnTpnSPeFp+8pOfHPO1ZVk88MAD3HDDDQBs\n27YtHWMlxcaNG2ltbQWgra2NW2+9FZ/Px44dO/j5z3/Od7/73fQOeJouuOACOjs7yc7O5mc/+xm9\nvb1s3LiRZ555BoDGxsa0zpeSyxbTLRAITHq7ZVm88847szxN8t155528/PLL5OXl0dnZyaZNm6it\nreWaa67BhO/Pf/jDH+jq6uLQoUOsXLmS3t5enE4nw8PDrF+/PuML/S9/+QtXXXUVfr8//v+rpaWF\ndevWpXmy07dv37745/X19TzzzDOcc845vP3226xfvz7jC318fJzs7GwAnnrqKXbu3MmCBQv4zne+\nw0UXXZTm6Qwt9GeffZYHH3yQM88885jbLcuis7MzTVMlz5EjR8jLywPA6/Xy97//na997Wv09/en\n4Tfrkm/RokVkZ2eTnZ3Neeedh9PpBGDp0qVGfMPq6uriF7/4BY8//ji/+c1vOPvss6mpqSEUCqV7\ntNN29N+/0dFRzjnnHACWL1/OggWZf4Y3Pz+fZ555htLSUgoLC+nv76egoGDObBSNLPRLL72U7Oxs\nrrrqqhP+rKioKA0TJdfixYvp7e3l3HPPBSAvL49IJMLGjRt5/fXX0zzd6bPZbBw+fJisrCweffTR\n+O0fffQR4+PjaZwsORYvXszdd9/Nyy+/TFVVFVdffbURuQB27drFkiVLsCyLjz/+mLfeeou8vDxG\nR0c5cuRIusc7bffeey833HAD1dXV5OTksGbNGtasWcN7773Hb3/723SPN//OoZtg165dnHHGGZx3\n3nnH3H748GHC4TBVVVVpmiw59u/fz9lnn43dfux+IxaL0d3dTVlZWZomSz7LsmhoaOD555/nwQcf\nTPc4KfPee+/R3d3NZZddlu5RkqK7u5s9e/YwNjbGihUruOSSS+bETyDzutAvu+wynn/++XSPkTLK\nl9lMzmdyNkhfvvR/S0mj/15+ZCrly2wm5zM5G6Qv37wudBOeQDwV5ctsJuczORukL9+8LnQREZPM\n60I3/ekD5ctsJuczORukL9+8flL0X//6FxdccEG6x0gZ5ctsJuczORukL5/RO/RHHnkEt9tNTk4O\nS5YsYfHixSxZsiT+55n+F0r5lG+uMjkbzN18Ru/QzzvvPP76178a+25JypfZTM5ncjaYu/mM3qE7\nHI459x88mZQvs5mcz+RsMHfzGb1Dv+WWWxgYGGDjxo186lOfit/+jW98I41TJY/yZTaT85mcDeZu\nPiNfy+W/Dhw4QHZ2Nh0dHfHbbDZb2v+jJ4vyZTaT85mcDeZuPqN36CIi84nR59D37NnD+vXr4884\nv/baa/zqV79K81TJo3yZzeR8JmeDOZzPMtiVV15pvfjii9aaNWvit61atSqNEyWX8mU2k/OZnM2y\n5m4+o3foBw8exOv1HnPb8S/JmsmUL7OZnM/kbDB38xld6MuXL6e3tzf+Qjl/+tOf4u/0YwLly2wm\n5zM5G8zhfOn+ESGVent7rfXr11uf/vSnrbPPPtu64oorrL6+vnSPlTTKl9lMzmdyNsuau/nmxVUu\nH374IePj4yxevDjdo6SE8mU2k/OZnA3mXj6jT7kMDg5y0003ce2117J48WK6urq477770j1W0ihf\nZjM5n8nZYA7nS/ePCKn01a9+1Xr44YetCy+80LIsyzp8+LB1wQUXpHmq5FG+zGZyPpOzWdbczWf0\nDv3tt98mGAzG37zVbrezcOHCNE+VPMqX2UzOZ3I2mLv5jC70M844g3feeSf+TPQLL7xATk5OmqdK\nHuXLbCbnMzkbzOF86f4RIZVefvll6/LLL7eWLFliXX755Zbb7bZ27dqV7rGSRvkym8n5TM5mWXM3\nn9E79N7eXrZv386OHTsoLy/H7XYzNjaW7rGSRvkym8n5TM4Gczhfur+jpNLq1asty7KsZ5991vL5\nfNbf/vY3y+v1pnmq5FG+zGZyPpOzWdbczWf0Dv2/T1I8+uij/OAHP+Dqq69mdHQ0zVMlj/JlNpPz\nmZwN5m4+owvd5XLxwx/+kIcffpgNGzbw8ccfMz4+nu6xkkb5MpvJ+UzOBnM3n9G/KXrw4EEef/xx\nVq9ejdvt5q233uKf//wnfr8/3aMlhfJlNpPzmZwN5m4+owtdRGQ+MfqUi4jIfKJCFxExhApdRMQQ\nKnQREUP8P8GCKfYWj5HDAAAAAElFTkSuQmCC\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x7efffc92dcf8>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "star_wars[['seen_1', 'seen_2', 'seen_3', 'seen_4', 'seen_5', 'seen_6']].sum().plot(kind='bar')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "* Do you consider yourself to be a fan of the Star Wars film franchise? - True or False\n",
+    "* Do you consider yourself to be a fan of the Star Trek franchise? - Yes or No\n",
+    "* Gender - Male or Female\n",
+    "\n",
+    "Split the data into two groups based on one of the binary columns above.<br><br>\n",
+    "Redo the two previous analyses (find the most viewed movie and the highest-ranked movie) separately for each group, and then compare the results.<br><br>\n",
+    "If you see any interesting patterns, write about them in a Markdown cell."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 89,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "star_wars[['rank_1', 'rank_2', 'rank_3', 'rank_4', 'rank_5', 'rank_6']] /= 2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 96,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "star_wars_fan = star_wars[star_wars['Do you consider yourself to be a fan of the Star Wars film franchise?']==True]\n",
+    "star_wars_notfan = star_wars[star_wars['Do you consider yourself to be a fan of the Star Wars film franchise?']==False]\n",
+    "\n",
+    "star_trek_fan = star_wars[star_wars['Do you consider yourself to be a fan of the Star Trek franchise?']=='Yes']\n",
+    "star_trek_notfan = star_wars[star_wars['Do you consider yourself to be a fan of the Star Trek franchise?']=='No']\n",
+    "\n",
+    "males = star_wars[star_wars['Gender']=='Male']\n",
+    "females = star_wars[star_wars['Gender']=='Female']"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Star Wars fans vs. not fans\n",
+    "Star wars fans\n",
+    "* Star Wars fans tend to rate more for the early series than recent ones\n",
+    "* Seen ratio is very high (over 80% for the entire series)\n",
+    "\n",
+    "Star wars no fans\n",
+    "* No fans tend to rate mid series (3,4) higher than others\n",
+    "* Seen ratio is relatively low"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 105,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<matplotlib.axes._subplots.AxesSubplot at 0x7effcae30a20>"
+      ]
+     },
+     "execution_count": 105,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "image/png": "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\nUAAAAABJRU5ErkJggg==\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x7effcae2d048>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "star_wars_fan[['rank_1', 'seen_1', 'rank_2', 'seen_2',\n",
+    "               'rank_3', 'seen_3', 'rank_4', 'seen_4',\n",
+    "               'rank_5', 'seen_5', 'rank_6', 'seen_6']]\\\n",
+    "                .mean().plot(kind='bar', color=['b', 'g'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 106,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<matplotlib.axes._subplots.AxesSubplot at 0x7effcad658d0>"
+      ]
+     },
+     "execution_count": 106,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "image/png": "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\nO3eu3nnnnWavLV261PF6N2tWVla2mH/06FHHa9XU1Oj555/X6tWr1dDQoAULFig1NVVz584NWdjV\n1NSovr5eklRZWakdO3aooqIiJLXq6+ubTRcuXNCoUaP02WefBcYQSi+99FJI119UVBR43NDQoEWL\nFiktLU2zZ892+Crslk6dOqWdO3e2uK2HU1avXq3z589Lkj744AM9/PDDyszM1ODBg1VcXOx4verq\nan311VeSbpyZt3nzZi1fvlwbN27UtWvXHKvT5T7Y/Oijj1qdb4xRdna2zp49G7axDBo0SNXV1Y6u\n8+mnn1ZiYqJGjx6tN954Q5GRkXrnnXd0//33Kz09vc3+O+qvf/2rVq1apX79+unq1avasmWLRo4c\nKUkhqTdhwgTNnDlTly5d0pYtW7RgwQLNnj1bu3btkt/v144dOxyt99prr+l3v/ud7rvvPq1atUqv\nvvqqvv3tb+vgwYN66aWXNHfuXEfrdevWTYMHD242r6amRgMHDpTH49Enn3ziWK0VK1Y0e26M0Z//\n/OfALS7Wr1/vWK2bbt0mnn/+ecXFxWnx4sXauXOniouLtWvXLsdq5eTkBNZXUFCgVatWyefz6eDB\ng3rxxRc1f/58x2pJUmpqqo4dOyZJGjdunH7zm99o5MiRqqio0OzZs/XBBx84Wi8lJUWlpaWKiorS\nT3/6U1VWVionJ0f79++XJL3xxhvOFAp2sU+4devWzYwbN874fL4W0wMPPOB4venTp7c6ZWdnm6io\nKMfrPfbYY82er1mzxowZM8acP3/ePP744yGp9+mnnxpjjDl8+LAZPny42blzpzHGGK/XG5J6NyUk\nJDR7LRT1RowYYS5dumTOnz9voqKizNmzZ40xxtTX14fk67l27VozadIkc/To0cC8IUOGOF7HGGMG\nDhxo5syZY958802zZcsWs2XLFtO3b9/A41C49Wv29W31688769bt4YknnjCffPKJMcaY//73vyYt\nLc3RWsYYk5SUZK5evWqMMSYzM7PZaykpKY7XS05ODjxOT083169fDzx3sr+g54mH281z0BMTE1u8\nduv9WZzy/vvv6+2331Z0dHSz+cYYlZaWOl7vypUrampqUrduN45k/exnP1N8fLyysrJ08eJFx+td\nv35d/fv3lySNGjVK//znP5Wdna0zZ87I4/E4Xs/c8ofdzT3GW8fitPvuu09RUVGKiorS0KFDFRcX\n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\nDgAW+x/jvbgrVH2sbwAAAABJRU5ErkJggg==\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x7effcad58ef0>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "star_wars_notfan[['rank_1', 'seen_1', 'rank_2', 'seen_2',\n",
+    "               'rank_3', 'seen_3', 'rank_4', 'seen_4',\n",
+    "               'rank_5', 'seen_5', 'rank_6', 'seen_6']]\\\n",
+    "                .mean().plot(kind='bar', color=['b', 'g'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Star Trek fans vs. not fans\n",
+    "Star Trek fans\n",
+    "* Star Trek fans seem to be simliar to Star Wars fans in terms of nostalgia for earlies and seen ratio.\n",
+    "\n",
+    "Star Trek no fans\n",
+    "* Unlikely with Star Wars no fans, Star Trek no fans seem to rate the early Star Wars series higher than the early ones."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 107,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<matplotlib.axes._subplots.AxesSubplot at 0x7effcacc3cc0>"
+      ]
+     },
+     "execution_count": 107,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "image/png": "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\n+ulm5zvtO9/5jmbPnq2srCw9+OCDTeo7hf5Cw839has3yd39uXXb7HS3ou0oCxcubDLP4/E4d7vI\nDkZ/9nJzbxL9tVenDfHS0lJt2LBB5eXljW6gfudevLajP7vRn73c1lunDfHHH39cy5YtU3p6urp2\n7RqYn56eHpJ6paWl+uEPf6jq6mp98sknOnHihPbt2xeSu5tJ9Oc0N/cX7t4kd/fnum0zZB+ZtlO4\nz9scN26cOXbsWKMb1Q8fPjxk9ejPWW7uL9y9GePu/ty2bXbaKzZnzJihP/7xj7pw4UKj7zQMlWvX\nrmnUqFGN5nXrFrrPfenPWW7uL9y9Se7uz23bZqc7O+WOt956S5L029/+NjDP6e8wbKhv374qKysL\n3Ixm165dgW/ECQX6c5ab+wt3b5K7+3PdtunYPr3lysrKzPe+9z3TvXt3M2DAADN27Fhz9uzZjh6W\nY+jPXm7uzRj6a69O+8GmJH3yyScqKSlpdL/db35vo9OuXr2q+vp69ezZM6R1JPoLBTf3F87eJHf3\n56pt07FfBw7Lzs42Pp/P9OvXzyxYsMDExMSYZ555JmT1Ll68aBYtWmSmTJlijDHm1KlT5o033ghZ\nPfpzlpv7C3dvxri7P7dtm502xEeMGGFu3bplUlNTjTG3fxATJ04MWb0pU6aYnTt3BurduHHDjBgx\nImT16M9Zbu4v3L0Z4+7+3LZtdtqzUx566CF16dJF3bp105dffql+/frp/PnzIat36dIlPffcc+rS\n5faPpFu3bo3OIXUa/TnLzf2FuzfJ3f25bdvslGenGGOUmpqqL774QkuWLFF6erqioqL05JNPhqxm\njx49dPny5cAnyIWFhXr44YdDUov+nOfm/sLZm+Tu/ly5bTq2T++whn9unD171hw/fjyk9T766CMz\nZswY06tXLzNmzBiTmJgY0pr05yw39xfu3oxxd39u2zY77eGUtLQ0/etf/5IkDR48WKmpqSGtV1ZW\npry8PB05ckSTJ09WYmJio/sqOI3+nOXm/sLdm+Tu/ly3bTr268Bhw4YNM127djWPPPKISUlJMSNG\njDApKSkhq3dn3R988IHx+Xzm73//uxk1alTI6tGfs9zcX7h7M8bd/blt2+yUx8Ql6cCBA2Gtd+eD\nhvfff19LlizR9OnTQ3qDIfpzlpv7C3dvkrv7c9u22akv9gmnzMxMxcXF6eDBg/r444/VvXt3jRo1\nSsePH+/ooTmC/uzl5t4k+msvQvz/u3btmvLz85WSkqLExERduHBBJ0+e1KRJkzp6aI6gP3u5uTeJ\n/tqLEAcAi3Xas1MAAMER4gBgMUIcACxGiAOAxf4fqaazpxUqkk0AAAAASUVORK5CYII=\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x7effcaccada0>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "star_trek_fan[['rank_1', 'seen_1', 'rank_2', 'seen_2',\n",
+    "               'rank_3', 'seen_3', 'rank_4', 'seen_4',\n",
+    "               'rank_5', 'seen_5', 'rank_6', 'seen_6']]\\\n",
+    "                .mean().plot(kind='bar', color=['b', 'g'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 108,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<matplotlib.axes._subplots.AxesSubplot at 0x7effcac5d160>"
+      ]
+     },
+     "execution_count": 108,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "image/png": "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\nAABJRU5ErkJggg==\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x7effcabb5be0>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "star_trek_notfan[['rank_1', 'seen_1', 'rank_2', 'seen_2',\n",
+    "               'rank_3', 'seen_3', 'rank_4', 'seen_4',\n",
+    "               'rank_5', 'seen_5', 'rank_6', 'seen_6']]\\\n",
+    "                .mean().plot(kind='bar',color=['b', 'g'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Men vs. Women\n",
+    "Common\n",
+    "* Rate the early series higher than the recent ones\n",
+    "* Rate Series IV the worst\n",
+    "\n",
+    "Diff\n",
+    "* Men have higher seen ratio than women"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 109,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<matplotlib.axes._subplots.AxesSubplot at 0x7effcac09748>"
+      ]
+     },
+     "execution_count": 109,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "image/png": "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\nQmCC\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x7effcabf0630>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "males[['rank_1', 'seen_1', 'rank_2', 'seen_2',\n",
+    "               'rank_3', 'seen_3', 'rank_4', 'seen_4',\n",
+    "               'rank_5', 'seen_5', 'rank_6', 'seen_6']]\\\n",
+    "                .mean().plot(kind='bar', color=['b', 'g'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 110,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<matplotlib.axes._subplots.AxesSubplot at 0x7effcaaf25f8>"
+      ]
+     },
+     "execution_count": 110,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "image/png": "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\nq6tVV1cnSaqsrNT27dtVUVERklp1dXVNposXL2rEiBH6/PPPA2MIpZdffjmk6y8qKgo8rq+v18KF\nC5Wenq5Zs2Y5fBZ2c6dOndKOHTuaXdbDKatWrdKFCxckSR999JEeeeQRZWVlacCAASouLna83pkz\nZ/T1119LuvnNvE2bNmnZsmXasGGDrl+/7lidiPtg8/Dhwy3ON8Zo6tSpOnfuXNjG0r9/f505c8bR\ndT7zzDNKTk7WyJEj9dZbbyk6OlrvvfeeHnzwQWVkZLTaf1v97W9/08qVK9WnTx9du3ZNmzdv1vDh\nwyUpJPXGjRunGTNm6PLly9q8ebPmz5+vWbNmaefOnfL7/dq+fbuj9d544w39/ve/1wMPPKCVK1fq\n9ddf13e/+10dOHBAL7/8subMmeNovU6dOmnAgAFN5lVXVysxMVEej0effvqpY7WWL1/e5LkxRn/5\ny18Cl7hYt26dY7VuuX2beOGFFxQfH69FixZpx44dKi4u1s6dOx2rlZOTE1hfQUGBVq5cKZ/PpwMH\nDuill17SvHnzHKslSWlpaTp27JgkacyYMfrtb3+r4cOHq6KiQrNmzdJHH33kaL3U1FSVlpYqJiZG\nP//5z1VZWamcnBzt27dPkvTWW285UyjYyT7h1qlTJzNmzBjj8/maTQ899JDj9aZNm9biNHXqVBMT\nE+N4vccff7zJ89WrV5tRo0aZCxcumCeeeCIk9T777DNjjDGHDh0yQ4YMMTt27DDGGOP1ekNS75ak\npKQmr4Wi3rBhw8zly5fNhQsXTExMjDl37pwxxpi6urqQ/DzXrFljJkyYYI4ePRqYN3DgQMfrGGNM\nYmKimT17tnn77bfN5s2bzebNm03v3r0Dj0Ph9p/ZN7fVbz5vr9u3hyeffNJ8+umnxhhj/ve//5n0\n9HRHaxljTEpKirl27ZoxxpisrKwmr6Wmpjpeb+jQoYHHGRkZ5saNG4HnTvYX9Hvi4XbrO+jJycnN\nXrv9+ixO+fDDD/Xuu+8qNja2yXxjjEpLSx2vd/XqVTU2NqpTp5tHsn7xi18oISFB2dnZunTpkuP1\nbty4ob59+0qSRowYoX/961+aOnWqzp49K4/H43g9c9sfdrf2GG8fi9MeeOABxcTEKCYmRoMGDVJ8\nfLwkqWfPniE5uexnP/uZZs6cqZ/85CdKSkpSfn5+SH6OklReXq5f/vKXKioq0po1a9SvXz/l5+fr\nhz/8YUjqSTeP769du1bGGNXX18sYE+ivsbHR0Vq3/9waGhr07W9/W5LUu3fvwL8PJy1ZskSTJ0/W\nqlWrNHHiRK1YsUJPP/209u3bJ6/X63i9pKQk7du3T2PHjtXAgQN19uxZDRgwwPHj8BEX4nl5ea1u\nLH/4wx8crzdy5EjFxMToe9/7XrPXhgwZ4ni9adOmad++fRo3blxg3rx58xQfH69ly5Y5Xq9bt26q\nrKzUo48+Kknq27ev/H6/cnJydPz4ccfrzZgxQ5cuXVJsbKxWr14dmH/y5EkNHjzY8Xoej0fXrl1T\ndHS0Pvjgg8D8r7/+2vHQuSUxMVF///vftWvXLv3gBz/QlStXQlKnW7duev311/Xxxx9r9uzZmjJl\nSsh6umXRokX66quvJN3cLi9cuKBvfetbOn/+vONBd+TIEXXv3l3GGF29elXnzp1T37591dDQEJL/\n8JctW6a0tDRt2LBBFRUVun79uk6cOKGcnBy98sorjtd78803NXfuXOXl5enhhx+W1+uV1+vVF198\nobVr1zpXyLF9+jAL1Z+TkcKp/srKysyJEyeazW9oaDDvvvuuIzXawqn+Tp8+HfgT+XbV1dVm7969\njtS4kytXrphjx441m+/09tnY2GjWr19vZs+e7eh62yqU//4+//xzc+DAgZCtPxineysvLzc7d+40\n27ZtMyUlJU0OqzjB2hAPxfHOOxk5cmRY69Gfs9zcX7h7M8bd/dm2bVr1FcPbmTB/qebWV4XChf6c\n5eb+wt2b5O7+bNs2rQ3xUH2YRD3q2VYv3L2Fu6abf3dO1LM2xMP9v2W40Z/d6M9etvUWsSF+9erV\nZvNuPyNu9OjR4RyO479Y+qM/p4QidNzcXyT1JjnQX7uOqIfQ5MmTTUNDQ+D5Z599ZjIyMjpsPC19\nA6E96C+83Nyf070Z4+7+Iqk3Y9rfX8SG+J///GeTk5Njrl+/bk6dOmXS0tLMnj17QlZv+/btZtCg\nQaZ79+6mW7duJjY21nTr1i1k9ejPWW7uL9y9GePu/ty2bUZsiBtjzPr1683UqVNNamqq2b9/f0hr\nPfroo6a8vDykNb6J/pzj5v46ojdj3N2fm7bNiDtj8/YzmYwxOnPmjLxer0pKSlRSUqKf/vSnIakb\nFxenoUOHhmTdt6M/+rtX4epNcnd/bt02Iy7Eb53ye8vTTz/d4nynfec739HMmTOVk5OjBx98sFl9\np9BfaLi5v3D1Jrm7P7dumxF3KdqOMn/+/GbzPB6Pc5eL7GD0Zy839ybRX3tFbIhXVFRozZo1qqqq\nanIB9VvX4rUd/dmN/uzltt4iNsQff/xxLV68WJmZmercuXNgfmZmZkjqVVRU6Mc//rFqa2v1ySef\n6OjRo9q1a1dIrm4m0Z/T3NxfuHuT3N2f67bNkH1k2k7h/t5mdna2OXToUJML1Q8bNixk9ejPWW7u\nL9y9GePu/ty2bUbsGZvTpk3Tn/70J507d67JPQ1D5cqVKxoxYkSTeVFRofvcl/6c5eb+wt2b5O7+\n3LZtRty3U255++23JUm/+93vAvOcvofh7Xr37q3KysrAxWi2bdsWuCNOKNCfs9zcX7h7k9zdn+u2\nTcf26S1XWVlpvv/975suXbqYfv36mdGjR5tTp0519LAcQ3/2cnNvxtBfe0XsB5uS9Mknn6i8vLzJ\n9Xa/ed9Gp12+fFmNjY3q1q1bSOtI9BcKbu4vnL1J7u7PVdumY/8dOCwvL8/4fD7Tp08fM2/ePBMX\nF2eeeeaZkNU7f/68WbBggZk4caIxxpjjx4+bN998M2T16M9Zbu4v3L0Z4+7+3LZtRmyIp6ammhs3\nbpj09HRjzM0fxLhx40JWb+LEiWbr1q2BeteuXTOpqakhq0d/znJzf+HuzRh39+e2bTNiv53y0EMP\nqVOnToqKitKXX36pPn366OzZsyGrd+HCBT333HPq1OnmjyQqKqrJd0idRn/OcnN/4e5Ncnd/bts2\nI/LbKcYYpaen64svvtCiRYuUmZmp2NhYPfnkkyGr2bVrV128eDHwCXJJSYkefvjhkNSiP+e5ub9w\n9ia5uz9XbpuO7dM77PY/N06dOmWOHDkS0noff/yxGTVqlOnevbsZNWqUSU5ODmlN+nOWm/sLd2/G\nuLs/t22bEXs4JSMjQ//+978lSQMHDlR6enpI61VWVqqwsFAHDhzQhAkTlJyc3OS6Ck6jP2e5ub9w\n9ya5uz/XbZuO/XfgsCFDhpjOnTubRx55xKSlpZnU1FSTlpYWsnq31v3hhx8an89n/vGPf5gRI0aE\nrB79OcvN/YW7N2Pc3Z/bts2IPCYuSXv27AlrvVsfNHzwwQdatGiRpkyZEtILDNGfs9zcX7h7k9zd\nn9u2zYg+2Secpk6dqoSEBO3du1eHDx9Wly5dNGLECB05cqSjh+YI+rOXm3uT6K+9CPH/58qVKyoq\nKlJaWpqSk5N17tw5HTt2TOPHj+/ooTmC/uzl5t4k+msvQhwALBax304BAARHiAOAxQhxALAYIQ4A\nFvs/AXnPwFE4hUYAAAAASUVORK5CYII=\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x7effcaadc9e8>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "females[['rank_1', 'seen_1', 'rank_2', 'seen_2',\n",
+    "               'rank_3', 'seen_3', 'rank_4', 'seen_4',\n",
+    "               'rank_5', 'seen_5', 'rank_6', 'seen_6']]\\\n",
+    "                .mean().plot(kind='bar', color=['b', 'g'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.4.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 0
+}
