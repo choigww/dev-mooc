@@ -1,5 +1,5 @@
 import pandas as pd
-data = pd.read_scv('CRDC2013_14.csv', encoding="Latin-1")
+data = pd.read_csv('data/CRDC2013_14.csv', encoding="Latin-1")
 
 print(data['JJ'].value_counts())
 print(data['SCH_STATUS_MAGNET'].value_counts())
