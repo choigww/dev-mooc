@@ -1,9 +1,0 @@
-setup.py
-dss/__init__.py
-dss/data1.py
-dss/data2.py
-dss.egg-info/PKG-INFO
-dss.egg-info/SOURCES.txt
-dss.egg-info/dependency_links.txt
-dss.egg-info/not-zip-safe
-dss.egg-info/top_level.txt
