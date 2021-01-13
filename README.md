@@ -60,10 +60,10 @@
 ### 웹개발
 `웹 서비스는 어떻게 만들어지고 작동하는 것일까?`
 
-[Considering]
+[To go]
 - [패스트캠퍼스 파이썬 웹개발 올인원 패키지 Online](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202007/102754-166/[패스트캠퍼스]-교육과정소개서-파이썬-웹-개발.pdf)
 
-[To go]
+[Considering]
 - [생활코딩 WEB1 HTML & Internet](https://opentutorials.org/course/3084)
 - [네이버 부스트코스 비전공자르 위한 HTML/CSS](https://www.boostcourse.org/cs120/joinLectures/33586)
 - [생활코딩 WEB2 Javascript](https://opentutorials.org/course/3085)
