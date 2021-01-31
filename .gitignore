@@ -3,7 +3,8 @@
 
 # Custom extensions
 *.csv
-*.ipynb_checkpoints
+*/.ipynb_checkpoints/*.ipynb
+.ipynb_checkpoints
 *.DS_Store
 __pycache__/
 
