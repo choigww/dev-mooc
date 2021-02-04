@@ -1,0 +1,15 @@
+e-book
+http://matrix.skku.ac.kr/LA-K
+
+강의록 및 실습실
+matrix.skku.ac.kr/K-MOOC-LA
+
+선형대수학 사이버랩
+http://sage.skku.edu
+- 행렬 계산기
+- 그래픽 계산기
+
+
+#assignment 1
+'초기 선형대수학의 역사' 읽고 감상문 작성하기 (QnA 게시판 공유)
+http://matrix.skku.ac.kr/sglee/linear/ocu/20101.html
