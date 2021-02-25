@@ -8,6 +8,10 @@
 *.DS_Store
 __pycache__/
 
+*.csv
+*.pkl
+*.sql
+
 # User-specific files
 *.suo
 *.user

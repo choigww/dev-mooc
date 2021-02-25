@@ -1,0 +1,16 @@
+ipython
+jupyter
+numpy
+pandas
+requests
+bs4
+selenium
+matplotlib
+pillow
+seaborn
+scikit-learn
+scipy
+statsmodels
+mysqlclient
+sqlalchemy
+pymongo==2.8.1

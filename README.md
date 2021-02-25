@@ -8,7 +8,7 @@
 - 공자
 ```
 
-유연성 높은 애자일 프로세스를 실행할 수 있도록, 다음과 같은 T자형 개발자를 목표로 합니다.
+컴퓨터공학 및 소프트웨어 개발에 관한 배경지식을 갖춘 다음과 같은 T자형 데이터 사이언티스트를 목표로 합니다.
 * **CORE FUNCTION AREA**
   * 요구사항 이해
   * 데이터 수집
@@ -23,59 +23,77 @@
     * Python
   * 자료구조/ 알고리즘
     * C, C++
+  * 도메인 지식
   * 소프트 스킬
 
 
 ## Getting Started
 
-### 데이터 사이언스
+### 데이터 사이언스 / 컴퓨터 사이언스
+
 `데이터 과학이란, 데이터 마이닝과 유사하게 정형, 비정형 형태를 포함한 다양한 데이터로부터 지식과 인사이트를 추출하는데 과학적 방법론, 프로세스, 알고리즘, 시스템을 동원하는 융합분야다.`
 
 [Ongoing]
+
 - 아시아경제 응용AI소프트웨어개발 국비지원과정
 - [패스트캠퍼스 데이터사이언스 온라인](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202011/162226-233/[패스트캠퍼스]-교육과정소개서-데이터-사이언스-온라인-완주반.pdf)
+- [패스트캠퍼스 컴퓨터공학 온라인](https://www.fastcampus.co.kr/CS_online_challenge)
+- [[Coursera Deeplearning.ai] Deep Learning Specialization](https://www.coursera.org/specializations/deep-learning)
+- [[포항공대 K-mooc] 시계열분석 기법과 응용](http://www.kmooc.kr/courses/course-v1:POSTECHk+IMEN677+2020_2/about)
 
 [To go]
+
+- [[포항공대 K-mooc] 빅데이터 입문](http://www.kmooc.kr/courses/course-v1:POSTECHk+CSED490k+2021_T1/about)
+- [[서울대 K-mooc] 인공지능 기초](http://www.kmooc.kr/courses/course-v1:SNUk+SNU048_011k+2020_T3/course/)
+- [[연세대 K-mooc] 텍스트 마이닝 실전 및 분석](http://www.kmooc.kr/courses/course-v1:YSUk+FD_YSU_LIS01k+2021_T1/course/)
 - [Google 머신러닝 단기집중과정](https://developers.google.com/machine-learning/crash-course?hl=ko)
 - [패스트캠퍼스 파이썬을 활용한 데이터 전처리 Level UP 올인원 패키지 Online](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202007/003536-14/[패스트캠퍼스]-교육과정소개서-파이썬을-활용한-데이터-전처리-level-up.pdf)
-- [패스트캠퍼스 딥러닝/인공지능 올인원 패키지 Online](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202007/104045-166/[패스트캠퍼스]-교육과정소개서-딥러닝-인공지능.pdf)
 
-[Considering]
-`최신 딥러닝 논문을 읽고 직접 써먹을 수 있도록 하자.`
-- [패스트캠퍼스 딥러닝을 활용한 추천시스템 구현 올인원 패키지 Online](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202101/164105-312/[패스트캠퍼스]-교육과정소개서-딥러닝을-활용한-추천시스템-구현--1-.pdf)
-- [패스트캠퍼스 GAN 딥러닝 완벽 가이드 with 글로벌 엔지니어 Global Expert](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202009/170525-166/[패스트캠퍼스]-교육과정소개서-gan-딥러닝-완벽-가이드-with-글로벌-엔지니어-global-expert.pdf)
-- 패스트캠퍼스 머신러닝 300제 + 문제은행
+[Finished]
 
-#### 수학
+- [[중앙대학교 K-mooc] 딥러닝의 깊이 있는 이해를 위한 머신러닝](http://www.kmooc.kr/courses/course-v1:CAUk+CAU_A02+2020_1/about)
+  - [이수증](https://www.kmooc.kr/certificates/user/852435/course/course-v1:CAUk+CAU_A02+2020_1)
+- [[중앙대학교 K-mooc] 인공지능 연구동향](http://www.kmooc.kr/courses/course-v1:CAUk+CAU_A04+2020_1/about)
+  - [이수증](https://www.kmooc.kr/certificates/user/852435/course/course-v1:CAUk+CAU_A04+2020_1)
+
+
+
+
+
+### 수학
+
 `수학은 도구다, 필요할 때 언제든 꺼내 쓸 수 있도록 손을 사용하여 익숙해지자.`
 
 [Ongoing]
-- [K-mooc 인공지능을 위한 기초수학](http://www.kmooc.kr/courses/course-v1:SKKUk+SKKU_45+2020_T1/course/)
+
+- [패스트캠퍼스 데이터사이언스 온라인](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202011/162226-233/[패스트캠퍼스]-교육과정소개서-데이터-사이언스-온라인-완주반.pdf)
+  - 선형대수
+  - 확률통계
 
 [To go]
 `어떤 데이터에 어떤 모델이 좋을까? 왜 좋은 걸까?`
 - [패스트캠퍼스 수학적으로 접근하는 딥러닝 올인원 패키지 Online](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202007/112730-166/[패스트캠퍼스]-교육과정소개서-수학적으로-접근하는-딥러닝.pdf)
 
+[Finished]
 
-### 웹개발
-`웹 서비스는 어떻게 만들어지고 작동하는 것일까?`
+- [[중앙대학교 K-mooc] 신경망 네트워크와 수학적 기반](http://www.kmooc.kr/courses/course-v1:CAUk+CAU_A01+2020_1/about)
+  - [이수증](https://www.kmooc.kr/certificates/user/852435/course/course-v1:CAUk+CAU_A01+2020_1)
 
-[To go]
-- [패스트캠퍼스 파이썬 웹개발 올인원 패키지 Online](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202007/102754-166/[패스트캠퍼스]-교육과정소개서-파이썬-웹-개발.pdf)
 
-[Considering]
-- [생활코딩 WEB1 HTML & Internet](https://opentutorials.org/course/3084)
-- [네이버 부스트코스 비전공자르 위한 HTML/CSS](https://www.boostcourse.org/cs120/joinLectures/33586)
-- [생활코딩 WEB2 Javascript](https://opentutorials.org/course/3085)
-- [네이버 부스트코스 웹 프로그래밍(풀스택)](https://www.boostcourse.org/web316)
 
-### 컴퓨터 사이언스
-`비전공자니까 포기하지 말고, 비전공자니까 더 뛰자.`
+
+
+### 기타
 
 [Ongoing]
-- [네이버 부스트코스 CS50 코칭스터디 2기](https://www.boostcourse.org/study-cs50-2nd)
-- [K-mooc 인공지능을 위한 알고리즘과 자료구조: 이론, 코딩, 그리고 컴퓨팅 사고](http://www.kmooc.kr/courses/course-v1:SKKUk+SKKU_46+2020_T1/course/)
 
-[To go]
-- [패스트캠퍼스 컴퓨터공학 올인원 패키지](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202101/102057-261/[패스트캠퍼스]-교육과정소개서-컴퓨터공학2019--1-.pdf)
+- [[포항공대 K-mooc] 간단한 모형으로 따라잡는 금융공학 트렌드](http://www.kmooc.kr/courses/course-v1:POSTECHk+IMEN387+2020_2/about)
+- [[포항공대 K-mooc] Design Thinking: 문제의 발견과 해결](http://www.kmooc.kr/courses/course-v1:POSTECHk+CITE103+2021_1/about)
+
+[Finished]
+
+- [[중앙대학교 K-mooc] 금융 AI](http://www.kmooc.kr/courses/course-v1:CAUk+CAU_AI03+2020_1/about)
+  - [이수증](https://www.kmooc.kr/certificates/user/852435/course/course-v1:CAUk+CAU_AI03+2020_1)
+
+
 
