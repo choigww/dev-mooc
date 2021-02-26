@@ -4,7 +4,7 @@
 "The greatest of all weaknesses is the fear of appearing weak."
 - J. B. Bossuet, Politics from Holy Writ, 1709
 
-"아는 것을 안다고 하고, 모르는 것을 모른다 함이 진정한 앎이니라."
+"아는 것을 안다고 하고, 모르는 것을 모른다 함이 진정한 앎이다."
 - 공자
 ```
 
@@ -14,7 +14,7 @@
   * 데이터 수집
   * 데이터 분석 및 시각화
   * 데이터 전처리
-  * 머신러닝 모델 생성 및 튜닝
+  * 머신러닝 모델링
     * 가설 수립-검증-평가-개선 iteration
 * **BROAD FUNCTION AREA**
   * 프론트엔드
@@ -35,7 +35,7 @@
 
 [Ongoing]
 
-- 아시아경제 응용AI소프트웨어개발 국비지원과정
+- 아시아경제 응용AI소프트웨어개발자 양성과정
 - [패스트캠퍼스 데이터사이언스 온라인](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202011/162226-233/[패스트캠퍼스]-교육과정소개서-데이터-사이언스-온라인-완주반.pdf)
 - [패스트캠퍼스 컴퓨터공학 온라인](https://www.fastcampus.co.kr/CS_online_challenge)
 - [[Coursera Deeplearning.ai] Deep Learning Specialization](https://www.coursera.org/specializations/deep-learning)
