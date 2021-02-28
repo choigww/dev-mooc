@@ -45,17 +45,22 @@
 - 아시아경제 응용AI소프트웨어개발자 양성과정
 - [패스트캠퍼스 데이터사이언스 온라인 - 90일 완주반](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202011/162226-233/[패스트캠퍼스]-교육과정소개서-데이터-사이언스-온라인-완주반.pdf)
 - [패스트캠퍼스 컴퓨터공학 온라인 - 60일 완주반](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202101/141550-134/컴퓨터-공학-전공자-따라잡기-완주반.pdf)
-- [[Coursera Deeplearning.ai] Deep Learning Specialization](https://www.coursera.org/specializations/deep-learning)
 
 
 
-[**To go]**
+[**To go**]
 
 - [[포항공대 K-mooc] 빅데이터 입문](http://www.kmooc.kr/courses/course-v1:POSTECHk+CSED490k+2021_T1/about)
 - [[서울대 K-mooc] 인공지능 기초](http://www.kmooc.kr/courses/course-v1:SNUk+SNU048_011k+2020_T3/course/)
 - [[연세대 K-mooc] 텍스트 마이닝 실전 및 분석](http://www.kmooc.kr/courses/course-v1:YSUk+FD_YSU_LIS01k+2021_T1/course/)
 - [Google 머신러닝 단기집중과정](https://developers.google.com/machine-learning/crash-course?hl=ko)
 - [패스트캠퍼스 파이썬을 활용한 데이터 전처리 Level UP 올인원 패키지 Online](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202007/003536-14/[패스트캠퍼스]-교육과정소개서-파이썬을-활용한-데이터-전처리-level-up.pdf)
+
+
+
+[**Pending**]
+
+- [[Coursera Deeplearning.ai] Deep Learning Specialization](https://www.coursera.org/specializations/deep-learning)
 
 
 
