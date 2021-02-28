@@ -44,7 +44,7 @@
 
 - 아시아경제 응용AI소프트웨어개발자 양성과정
 - [패스트캠퍼스 데이터사이언스 온라인 - 90일 완주반](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202011/162226-233/[패스트캠퍼스]-교육과정소개서-데이터-사이언스-온라인-완주반.pdf)
-- [패스트캠퍼스 컴퓨터공학 온라인 - 60일 완주반](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202101/141550-134/컴퓨터-공학-전공자-따라잡기-완주반.pdf)
+- [패스트캠퍼스 컴퓨터공학 온라인 - 60일 완주반](https://drive.google.com/file/d/1CAM8hQHjYrdl9t-_Cqu7ODYsRtQ94LxI/view?usp=sharing)
 
 
 
