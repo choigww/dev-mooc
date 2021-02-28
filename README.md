@@ -36,8 +36,8 @@
 [Ongoing]
 
 - 아시아경제 응용AI소프트웨어개발자 양성과정
-- [패스트캠퍼스 데이터사이언스 온라인](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202011/162226-233/[패스트캠퍼스]-교육과정소개서-데이터-사이언스-온라인-완주반.pdf)
-- [패스트캠퍼스 컴퓨터공학 온라인](https://www.fastcampus.co.kr/CS_online_challenge)
+- [패스트캠퍼스 데이터사이언스 온라인 - 90일 완주반](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202011/162226-233/[패스트캠퍼스]-교육과정소개서-데이터-사이언스-온라인-완주반.pdf)
+- [패스트캠퍼스 컴퓨터공학 온라인 - 60일 완주반](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202101/141550-134/컴퓨터-공학-전공자-따라잡기-완주반.pdf)
 - [[Coursera Deeplearning.ai] Deep Learning Specialization](https://www.coursera.org/specializations/deep-learning)
 - [[포항공대 K-mooc] 시계열분석 기법과 응용](http://www.kmooc.kr/courses/course-v1:POSTECHk+IMEN677+2020_2/about)
 
@@ -64,12 +64,6 @@
 
 `수학은 도구다, 필요할 때 언제든 꺼내 쓸 수 있도록 손을 사용하여 익숙해지자.`
 
-[Ongoing]
-
-- [패스트캠퍼스 데이터사이언스 온라인](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202011/162226-233/[패스트캠퍼스]-교육과정소개서-데이터-사이언스-온라인-완주반.pdf)
-  - 선형대수
-  - 확률통계
-
 [To go]
 `어떤 데이터에 어떤 모델이 좋을까? 왜 좋은 걸까?`
 - [패스트캠퍼스 수학적으로 접근하는 딥러닝 올인원 패키지 Online](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202007/112730-166/[패스트캠퍼스]-교육과정소개서-수학적으로-접근하는-딥러닝.pdf)
@@ -78,6 +72,9 @@
 
 - [[중앙대학교 K-mooc] 신경망 네트워크와 수학적 기반](http://www.kmooc.kr/courses/course-v1:CAUk+CAU_A01+2020_1/about)
   - [이수증](https://www.kmooc.kr/certificates/user/852435/course/course-v1:CAUk+CAU_A01+2020_1)
+- [패스트캠퍼스 데이터사이언스 온라인 - 수학 PART](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202011/162226-233/[패스트캠퍼스]-교육과정소개서-데이터-사이언스-온라인-완주반.pdf)
+  - 선형대수
+  - 확률통계
 
 
 
