@@ -11,24 +11,6 @@
 ```
 
 컴퓨터공학 및 소프트웨어 개발에 관한 배경지식을 갖춘 다음과 같은 T자형 데이터 사이언티스트를 목표로 합니다.
-* **CORE FUNCTION AREA**
-  * 요구사항 이해
-  * 데이터 수집
-  * 데이터 분석 및 시각화
-  * 데이터 전처리
-  * 머신러닝 모델링
-    * 가설 수립-검증-평가-개선 iteration
-* **BROAD FUNCTION AREA**
-  * 프론트엔드
-    * HTML, CSS
-  * 백엔드
-    * Python
-  * 자료구조/ 알고리즘
-    * C, C++
-  * 도메인 지식
-  * 소프트 스킬
-
-
 
 
 
@@ -46,11 +28,11 @@
   - 통계학 기반 자연어처리 Finished
   - 딥러닝 기반 자연어처리 진행 중
 - [패스트캠퍼스 데이터사이언스 온라인 - 90일 완주반](https://storage.googleapis.com/static.fastcampus.co.kr/prod/uploads/202011/162226-233/[패스트캠퍼스]-교육과정소개서-데이터-사이언스-온라인-완주반.pdf)
-  - 5주차 진행 중 / 총 8주 과정
-  - 누적 과제 및 퀴즈 점수 : 395점 / 400점
-- [패스트캠퍼스 컴퓨터공학 온라인 - 60일 완주반](https://drive.google.com/file/d/1CAM8hQHjYrdl9t-_Cqu7ODYsRtQ94LxI/view?usp=sharing)
   - 10주차 진행 중 / 총 12주 과정
   - 누적 과제 및 퀴즈 점수 : 1120점 / 1120점
+- [패스트캠퍼스 컴퓨터공학 온라인 - 60일 완주반](https://drive.google.com/file/d/1CAM8hQHjYrdl9t-_Cqu7ODYsRtQ94LxI/view?usp=sharing)
+  - 5주차 진행 중 / 총 8주 과정
+  - 누적 과제 및 퀴즈 점수 : 395점 / 400점
 - [[포항공대 K-mooc] 빅데이터 입문](http://www.kmooc.kr/courses/course-v1:POSTECHk+CSED490k+2021_T1/about)
   - 3월 31일 종료 예정
 
